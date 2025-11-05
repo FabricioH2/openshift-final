@@ -1,27 +1,12 @@
 # Usa la imagen base
-FROM fabricioph2/frontend-base:1.0 AS build
+FROM fabricioph2/frontend-base:1.0 
 
-WORKDIR /app
+COPY public/ /usr/share/nginx/html/
 
-# Copia y prepara dependencias
-COPY package*.json ./
-RUN npm install
-
-# Copia código y compila
-COPY . .
-RUN npm run build
-
-# Etapa 2: runtime con NGINX
-FROM nginx:1.25-alpine
-COPY --from=build /app/dist /usr/share/nginx/html
-
-# Crea un usuario y grupo sin privilegios
-RUN addgroup -S appgroup && adduser -S appuser -G appgroup
-
-# Cambia la propiedad de los archivos a ese usuario
-RUN chown -R appuser:appgroup /usr/share/nginx/html
-
-# Cambia al usuario no root
-USER appuser
-
+# 3. Exponer el Puerto
+# Nginx corre por defecto en el puerto 80 dentro del contenedor.
 EXPOSE 80
+
+# Opcional: Si necesitas alguna configuración específica de Nginx,
+# puedes copiar un archivo de configuración personalizado aquí.
+# COPY nginx.conf /etc/nginx/nginx.conf

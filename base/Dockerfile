@@ -1,16 +1,19 @@
-# Imagen base común para todos los frontends
-FROM node:20-alpine AS base
+# 1. Imagen base: Usamos la imagen oficial de Nginx.
+#    Esta es una imagen pequeña y optimizada para servir archivos estáticos.
+FROM nginx:alpine
 
-# Variables comunes
-ENV NODE_ENV=production
-WORKDIR /app
+# 2. Copia de los archivos del frontend:
+#    El directorio por defecto donde Nginx sirve archivos es /usr/share/nginx/html.
+#    Asume que los archivos de tu frontend (HTML, CSS, JS, etc.)
+#    están en una carpeta llamada 'dist' (típico de builds de React, Angular, Vue).
+#    ¡Asegúrate de cambiar 'dist' por el nombre de tu carpeta de build si es diferente!
 
-# Instala dependencias comunes del sistema (si las hay)
-RUN apk add --no-cache curl bash
 
-# Copia el package.json si quieres tener dependencias básicas comunes
-# COPY package*.json ./
-# RUN npm ci --omit=dev
+# 3. Exponer el puerto:
+#    El puerto por defecto que usa Nginx es el 80.
+EXPOSE 80
 
-# Esta imagen no contiene el código aún
-# Se usará como base para otras imágenes (multi-stage)
+# 4. Comando de inicio (opcional pero recomendado):
+#    El comando por defecto en la imagen de Nginx ya inicia el servidor,
+#    pero esta línea asegura que se use el comando principal en primer plano.
+# CMD ["nginx", "-g", "daemon off;"]
