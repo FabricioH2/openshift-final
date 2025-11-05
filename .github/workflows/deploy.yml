@@ -42,4 +42,4 @@ jobs:
           cat ./frontend/Chart.yaml
           helm package ./frontend
  
-          helm push ./frontend-${{ github.run_number }}.tgz oci://registry-1.docker.io/fabricioph2
+          helm push ./frontend-1.0.0.tgz oci://registry-1.docker.io/fabricioph2
