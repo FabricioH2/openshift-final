@@ -1,0 +1,11 @@
+image:
+  repository: fabricioph2/frontend
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  port: 80
+
+route:
+  enabled: true
+  host: frontend.apps.openshift.local  # Ajusta al dominio real de tu cluster
