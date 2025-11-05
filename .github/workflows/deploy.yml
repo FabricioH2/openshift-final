@@ -25,21 +25,24 @@ jobs:
           push: true
           tags: fabricioph2/frontend:latest
 
+      - name: Install OC CLI
+        run: |
+          curl -L https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/openshift-client-linux.tar.gz | tar xz
+          sudo mv oc /usr/local/bin/
+          oc version
+
       - name: Instalar Helm
         uses: azure/setup-helm@v4
         with:
           version: v3.14.0
 
-      - name: Login to Helm Registry
-        env:
-          HELM_REGISTRY_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
-        run: |
-          echo "${HELM_REGISTRY_PASSWORD}" | helm registry login registry-1.docker.io -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+      - name: Log in Openshift
+        uses: redhat-actions/oc-login@v1
+        with:
+          openshift_server_url: https://api.rm1.0a51.p1.openshiftapps.com:6443
+          openshift_token: ${{ secrets.OPENSHIFT_TOKEN }}
 
       - name: Deploy files
         run: |
-          sed -i "s|{{ version }}|${{ github.run_number }}|g" ./frontend/Chart.yaml
-          cat ./frontend/Chart.yaml
-          helm package ./frontend
- 
-          helm push ./frontend-1.0.0.tgz oci://registry-1.docker.io/fabricioph2
+          cat ./frontend/Chart.yaml 
+          helm upgrade --install fabricio-frontApp -/frontend --namespace ffisa-dev  --reuse-values   --values values.yaml
