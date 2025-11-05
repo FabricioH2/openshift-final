@@ -32,4 +32,4 @@ jobs:
       - name: Deploy files
         run: |
           cat ./frontend/Chart.yaml 
-          helm upgrade --install fabricio-frontend ./frontend --namespace ffisa-dev  --reuse-values   --values values.yaml
+          helm upgrade --install fabricio-frontend ./frontend  --reuse-values  --values ./frontend/values.yaml

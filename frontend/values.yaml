@@ -1,11 +1,6 @@
-image:
-  repository: fabricioph2/frontend
-  tag: latest
-  pullPolicy: IfNotPresent
+name: fabricio-frontend
 
-service:
-  port: 80
+# Kubernetes namespace to install into (can be overridden)
+namespace: ffisa-dev
 
-route:
-  enabled: true
-  host: frontend.apps.openshift.local  # Ajusta al dominio real de tu cluster
+replicaCount: 1
