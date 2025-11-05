@@ -12,19 +12,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Login a Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Build y push de imagen
-        uses: docker/build-push-action@v6
-        with:
-          context: ./frontend
-          push: true
-          tags: fabricioph2/frontend:latest
-
       - name: Install OC CLI
         run: |
           curl -L https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/openshift-client-linux.tar.gz | tar xz
@@ -45,4 +32,4 @@ jobs:
       - name: Deploy files
         run: |
           cat ./frontend/Chart.yaml 
-          helm upgrade --install fabricio-frontApp -/frontend --namespace ffisa-dev  --reuse-values   --values values.yaml
+          helm upgrade --install fabricio-frontApp ./frontend --namespace ffisa-dev  --reuse-values   --values values.yaml
