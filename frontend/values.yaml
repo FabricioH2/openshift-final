@@ -4,3 +4,8 @@ name: fabricio-frontend
 namespace: ffisa-dev
 
 replicaCount: 1
+service:
+  port: 3000
+
+image:
+  pullPolicy: Always
